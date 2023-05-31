@@ -1,8 +1,8 @@
-#!/usr/bin/python
-#+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-#|R|a|s|p|b|e|r|r|y|P|i|.|c|o|m|.|t|w|
-#+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+-+
-# Copyright (c) 2018, raspberrypi.com.tw
+#!/usr/bin/python3
+#+-+-+-+-+-+-+-+-+-+-+-+-+-+
+#|P|i|e|P|i|e|.|c|o|m|.|t|w|
+#+-+-+-+-+-+-+-+-+-+-+-+-+-+
+# Copyright (c) 2022, piepie.com.tw
 # All rights reserved.
 # Use of this source code is governed by a BSD-style license that can be
 # found in the LICENSE file.
@@ -12,7 +12,7 @@
 # by software
 #
 # Author : sosorry
-# Date   : 06/22/2018
+# Date   : 2023/05/30
 
 import RPi.GPIO as GPIO                 
 import time

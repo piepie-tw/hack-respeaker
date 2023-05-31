@@ -7,24 +7,40 @@ In this workshop, we will introudce how to hack [SeeedStudio ReSpeaker 2-Mics HA
 3. Embedded Google Assistant to Pi
 4. Hack ReSpeaker 2-Mic HAT
 
-The slide is available on [[slideshare] 改造 ReSpeaker 2-MIC HAT](https://www.slideshare.net/raspberrypi-tw/respeaker-2mic-hat-109144010)
+The slide is available on [[speakerdeck] 改造 ReSpeaker 2-MIC HAT](https://speakerdeck.com/piepie_tw/hack-respeaker)
 
 
 ## Environment
-[Raspberry Pi 3 Model B+ 入門組](https://www.raspberrypi.com.tw/21212/pi-3-b-plus-microsd-power-supply/) + 2018-06-27-raspbian-stretch.img
+[Raspberry Pi 4/2G 超值組](https://piepie.com.tw/product/raspberry-pi-4-model-b-2g-value-pack-pi-4-case-power-supply-microsd-case-hdmi) + [2021-05-07-raspios-buster-armhf.img](https://bit.ly/42iddHA)
 
 ## Prerequisite
 ### Install required package and Python module
 ```shell  
-$ sudo apt-get update
-$ sudo apt-get -y install python-pip python-dev python3-pip python3-dev x11vnc vim swig3.0 portaudio19-dev flac sox libatlas-base-dev python3-virtualenv virtualenv
-$ sudo pip install -U SpeechRecognition request
-$ sudo pip3 install -U python-vlc youtube_dl
+$ sudo apt-get update --allow-releaseinfo-change
+$ sudo apt-get install -y vim git 
+$ sudo apt-get install -y python3-pyaudio
+$ sudo apt-get install -y sox flac libatlas-base-dev espeak mpg123
+$ sudo pip3 install -U SpeechRecognition python-vlc gtts openai
+$ sudo ln -s /usr/lib/arm-linux-gnueabihf/libpython3.7m.so.1.0 /usr/lib/arm-linux-gnueabihf/libpython3.5m.so.1.0
+$ sudo pip3 install -U yt-dlp
+
+$ sudo pip3 install -U google-cloud-dialogflow
+$ sudo pip3 install grpcio-tools
+$ sudo pip3 install -I --force-reinstall grpcio
+```
+
+### Install ReSpeaker Driver
+```shell  
+$ cd ~
+$ git clone https://github.com/respeaker/seeed-voicecard.git
+$ cd seeed-voicecard
+$ sudo ./install.sh --compat-kernel
+$ sudo reboot
 ```
 
 ## HackMD
 [改造ReSpeaker 2-MIC HAT](https://hackmd.io/66rhYfscTFazn5wZzH3Uhg)
 
 ## Buy Raspberry Pi and Smeart Speaker Learning Kit
-* [[產品] Raspberry Pi 3 Model B+ 入門組](https://www.raspberrypi.com.tw/21212/pi-3-b-plus-microsd-power-supply/)
-* [[產品] 智慧喇叭語音學習套件](https://www.raspberrypi.com.tw/19621/pi-smart-speaker-kit/)
+* [[產品] Raspberry Pi 4/2G 超值組](https://piepie.com.tw/product/raspberry-pi-4-model-b-2g-value-pack-pi-4-case-power-supply-microsd-case-hdmi)
+* [[產品] 智慧喇叭語音學習套件 v2(支援 ChatGPT)](https://www.piepie.com.tw/30038/pi-smart-speaker-kit-v2)

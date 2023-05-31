@@ -2,6 +2,7 @@ import snowboydecoder
 import sys
 import signal
 import speech_recognition as sr
+import RPi.GPIO as GPIO
 import os
 
 """
@@ -16,13 +17,17 @@ https://pypi.python.org/pypi/SpeechRecognition/
 
 interrupted = False
 
+GPIO.setmode(GPIO.BCM)
+GPIO.setup(25, GPIO.OUT)
 
 def audioRecorderCallback(fname):
-    print "converting audio to text"
+    print("converting audio to text")
     r = sr.Recognizer()
-    r.pause_threshold = 0.8
+    r.pause_threshold = 1
     r.phrase_threshold = 0.3
     r.non_speaking_duration = 0.5
+    r.dynamic_energy_threshold = False
+
     with sr.AudioFile(fname) as source:
         audio = r.record(source)  # read the entire audio file
     # recognize speech using Google Speech Recognition
@@ -33,22 +38,25 @@ def audioRecorderCallback(fname):
         #print(r.recognize_google(audio))
         print(r.recognize_google(audio, language="zh-TW"))
     except sr.UnknownValueError:
-        print "Google Speech Recognition could not understand audio"
+        print("Google Speech Recognition could not understand audio")
     except sr.RequestError as e:
-        print "Could not request results from Google Speech Recognition service; {0}".format(e)
-
-    os.remove(fname)
+        print("Could not request results from Google Speech Recognition service; {0}".format(e))
+    finally:
+        GPIO.output(25, GPIO.LOW)
+        os.remove(fname)
 
 
 
 def detectedCallback():
     snowboydecoder.play_audio_file()
-    sys.stdout.write("recording audio...")
+    GPIO.output(25, GPIO.HIGH)
+    sys.stdout.write("Say something>>> ")
     sys.stdout.flush()
 
 def signal_handler(signal, frame):
     global interrupted
     interrupted = True
+    GPIO.cleanup()
 
 
 def interrupt_callback():
@@ -56,8 +64,8 @@ def interrupt_callback():
     return interrupted
 
 if len(sys.argv) == 1:
-    print "Error: need to specify model name"
-    print "Usage: python demo.py your.model"
+    print("Error: need to specify model name")
+    print("Usage: python demo.py your.model")
     sys.exit(-1)
 
 model = sys.argv[1]
@@ -66,7 +74,7 @@ model = sys.argv[1]
 signal.signal(signal.SIGINT, signal_handler)
 
 detector = snowboydecoder.HotwordDetector(model, sensitivity=0.5)
-print "Listening... Press Ctrl+C to exit"
+print("Listening... Press Ctrl+C to exit")
 
 # main loop
 detector.start(detected_callback=detectedCallback,
